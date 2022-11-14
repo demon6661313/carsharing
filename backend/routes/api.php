@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResources(
     [
-        'users'=>UserController::class,
-        'cars'=>CarController::class,
+        'users' => UserController::class,
+        'cars' => CarController::class,
     ]
 );

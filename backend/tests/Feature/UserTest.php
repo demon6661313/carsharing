@@ -3,12 +3,12 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -22,7 +22,7 @@ class UserTest extends TestCase
             'password' => 'qweqweqwe',
             'password_confirmation' => 'qweqweqwe',
         ];
-        $response = $this->post('/api/users', $user);
+        $response = $this->post('/api/users', $user, ['accept'=>'application/json']);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('users', [

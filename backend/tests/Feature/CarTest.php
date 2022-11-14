@@ -3,12 +3,12 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CarTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -19,10 +19,10 @@ class CarTest extends TestCase
         $car = [
             'brand' => 'Audi',
             'model' => 'A8',
-            'vin' => 'qweqweqwe',
+            'vin' =>'qweqweqwe',
         ];
-        $response = $this->post('/api/cars', $car);
-
+        $response = $this->post('/api/cars', $car, ['accept'=>'application/json']);
+        
         $response->assertStatus(200);
         $this->assertDatabaseHas('cars', [
             'vin' => 'qweqweqwe',

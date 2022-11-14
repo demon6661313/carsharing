@@ -24,20 +24,21 @@ class StoreCarRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand'=>['required', 'max:255'],
-            'model'=>['required', 'max:255'],
-            'vin'=>['required', 'max:255'],
-            'user_id'=>['nullable', 'unique:cars,user_id'],
+            'brand' => ['required', 'max:255'],
+            'model' => ['required', 'max:255'],
+            'vin' => ['required', 'max:255'],
+            'user_id' => ['nullable', 'unique:cars,user_id'],
         ];
     }
 
-    public function messages():array{
+    public function messages(): array
+    {
         return [
-            '*.required'=> 'Поле обязательно',
+            '*.required' => 'Поле обязательно',
             'brand.max' => 'Не более 255 символов',
             'model.max' => 'Не более 255 символов',
             'vin.max' => 'Не более 255 символов',
-            'user_id.unique'=>'У данного пользователя уже есть автомобиль',
+            'user_id.unique' => 'У данного пользователя уже есть автомобиль',
         ];
     }
 }

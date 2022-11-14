@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::query()->get(['id', 'name', 'email']);
+
         return response()->json($users);
     }
 
@@ -30,11 +30,12 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = User::query()->create([
-            'name'=> $request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
-        return response()->json();
+
+        return response()->json(['id'=>$user->id]);
     }
 
     /**
@@ -45,7 +46,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json(['user'=>$user]);
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
     }
 
     /**
@@ -60,6 +65,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
+
         return response()->json();
     }
 
@@ -72,6 +78,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return response()->json();
     }
 }

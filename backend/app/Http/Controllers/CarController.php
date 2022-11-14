@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+use App\Http\Resources\CarResource;
 use App\Models\Car;
 
 class CarController extends Controller
@@ -11,11 +12,14 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $cars = Car::query()->with('user')->get(['brand', 'model', 'vin', 'user.id', 'user.email']);
+        $cars = Car::query()->with('user')->get();
+        $cars = CarResource::collection($cars)->toArray(request());
+
+        return response()->json($cars);
     }
 
     /**
@@ -27,10 +31,10 @@ class CarController extends Controller
     public function store(StoreCarRequest $request)
     {
         Car::query()->create([
-            'brand'=>$request->brand,
-            'model'=>$request->model,
-            'vin'=>$request->vin,
-            'user_id'=>$request->user_id,
+            'brand' => $request->brand,
+            'model' => $request->model,
+            'vin' => $request->vin,
+            'user_id' => $request->user_id,
         ]);
 
         return response()->json();
@@ -44,7 +48,13 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return response()->json(['car'=>$car]);
+        return response()->json([
+            'brand' => $car->brand,
+            'model' => $car->model,
+            'vin' => $car->vin,
+            'user_id' => $car->user?->id,
+            'user_email' => $car->user->email,
+        ]);
     }
 
     /**
@@ -57,7 +67,8 @@ class CarController extends Controller
     public function update(UpdateCarRequest $request, Car $car)
     {
         $car->user_id = $request->user_id;
-        $car->save();        
+        $car->save();
+
         return response()->json();
     }
 
@@ -70,6 +81,7 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         $car->delete();
+
         return response()->json();
     }
 }

@@ -24,19 +24,20 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required', 'max:255'],
-            'email'=>['required', 'email:rfc,dns', 'unique:users,email'],
-            'password'=>['required', 'min:8'],
+            'name' => ['required', 'max:255'],
+            'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
+            'password' => ['required', 'min:8'],
             'password_confirmation' => ['required', 'same:password'],
         ];
     }
 
-    public function messages():array{
+    public function messages(): array
+    {
         return [
-            '*.required'=> 'Поле обязательно',
+            '*.required' => 'Поле обязательно',
             'name.max' => 'Не более 255 символов',
             'email.email' => 'Неправильный формат',
-            'password.min'=> 'Не менее 8 символов',
+            'password.min' => 'Не менее 8 символов',
             'password_confirmation.same' => 'Пароли не совпадают',
         ];
     }
