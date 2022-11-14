@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class UserTest extends TestCase
+class CarTest extends TestCase
 {
     use RefreshDatabase;
     /**
@@ -16,17 +16,16 @@ class UserTest extends TestCase
      */
     public function test_store()
     {
-        $user = [
-            'name' => 'demon',
-            'email' => 'demon@gmail.com',
-            'password' => 'qweqweqwe',
-            'password_confirmation' => 'qweqweqwe',
+        $car = [
+            'brand' => 'Audi',
+            'model' => 'A8',
+            'vin' => 'qweqweqwe',
         ];
-        $response = $this->post('/api/users', $user);
+        $response = $this->post('/api/cars', $car);
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas('users', [
-            'email' => 'demon@gmail.com',
+        $this->assertDatabaseHas('cars', [
+            'vin' => 'qweqweqwe',
         ]);
     }
 }
