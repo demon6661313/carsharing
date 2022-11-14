@@ -1,0 +1,59 @@
+version: "3.8"
+
+networks:
+  main:
+    name: carsharing
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: carsharing-bcakend
+    container_name: carsharing-backend
+    environment:
+      TZ: ${TIMEZONE}
+    volumes:
+      - storage:/var/www/storage
+      - assets:/var/www/public
+    networks:
+      - main
+    depends_on:
+      - database
+    deploy:
+      resources:
+        limits:
+          memory: "1024M"
+        reservations:
+          memory: "512M"
+    restart: always
+  nginx:
+    build:
+      context: ./nginx
+    image: carsharing-nginx
+    container_name: carsharing-nginx
+    environment:
+      TZ: ${TIMEZONE}
+    ports:
+      - "127.0.0.1:7000:80"
+    volumes:
+      - assets:/var/www/public:ro
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - main
+  database:
+    image: postgres:14
+    container_name: carsharing-database
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      TZ: ${TIMEZONE}
+    volumes:
+      - ./docker/database:/var/lib/postgresql/data
+    networks:
+      - main
+volumes:
+  storage:
+  assets:
